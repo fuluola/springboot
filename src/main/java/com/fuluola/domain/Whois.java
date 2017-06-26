@@ -14,12 +14,14 @@ public class Whois {
 //          server = "whois.verisign-grs.com";  
 //      } else 
     private static final int DEFAULT_PORT = 43;  
-    static String[] urls = new String[]{"cnhnb.com","csdn.net","yunhou.com"};
-      //grs-whois.hichina.com whois.paycenter.com.cn
+    static String[] urls = new String[]{"baidu.com","ele.me"};
+      //grs-whois.hichina.com whois.paycenter.com.cn whois.markmonitor.com whois.verisign-grs.com
     public String query(String domain) throws Exception {  
         String server = "";  
         String tld = getTLD(domain);  
-      if ("net".equals(tld)) {  
+        if ("com".equals(tld)) {  
+          server = "whois.markmonitor.com";  
+        } else if ("net".equals(tld)) {  
             server = "whois.networksolutions.com";  
         } else if ("org".equals(tld)) {  
             server = "whois.pir.org";  
@@ -31,6 +33,8 @@ public class Whois {
             server = "whois.kr";  
         }else if("io".equals(tld)){
         	server = "whois.nic.io";
+        }else if("me".equals(tld)){
+        	server = "whois.nic.me";
         }
         return query(domain, server);  
     }  
@@ -63,7 +67,7 @@ public class Whois {
         Whois w = new Whois();  
       //  System.out.println(w.query("spring.io")); 
         long start=System.currentTimeMillis();
-        for(int i=0;i<10;i++){
+        for(int i=0;i<2;i++){
         	
         	System.out.println(w.query(urls[i%urls.length]));  
         }
