@@ -10,17 +10,15 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Whois {  
-//	  if ("com".equals(tld)) {  
-//          server = "whois.verisign-grs.com";  
-//      } else 
+
     private static final int DEFAULT_PORT = 43;  
-    static String[] urls = new String[]{"baidu.com","ele.me"};
+    static String[] urls = new String[]{"=baidu.com","ele.me","csdn.net"};
       //grs-whois.hichina.com whois.paycenter.com.cn whois.markmonitor.com whois.verisign-grs.com
     public String query(String domain) throws Exception {  
         String server = "";  
         String tld = getTLD(domain);  
         if ("com".equals(tld)) {  
-          server = "whois.markmonitor.com";  
+          server = "whois.verisign-grs.com";  
         } else if ("net".equals(tld)) {  
             server = "whois.networksolutions.com";  
         } else if ("org".equals(tld)) {  
@@ -67,10 +65,10 @@ public class Whois {
         Whois w = new Whois();  
       //  System.out.println(w.query("spring.io")); 
         long start=System.currentTimeMillis();
-        for(int i=0;i<2;i++){
+       // for(int i=0;i<100;i++){
         	
-        	System.out.println(w.query(urls[i%urls.length]));  
-        }
+        	System.out.println(w.query("www.來必發.com"));  
+      //  }
         System.out.println("用时: "+(System.currentTimeMillis()-start));
 //        System.out.println(w.query("apache.org"));  
       //  System.out.println(w.query("360.cn"));          //china  
