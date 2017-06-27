@@ -4,6 +4,10 @@
  */
 package com.fuluola.springboot;
 
+import java.io.IOException;
+
+import com.fuluola.utils.WebUtil;
+
 /**
  * @author fuluola
  *
@@ -15,7 +19,10 @@ public class UtilTest {
         return (domain == null || (index = domain.lastIndexOf('.') + 1) < 1) ? domain  
                 : (index < (domain.length())) ? domain.substring(index) : "";  
     }  
-    public static void main(String[] args) {
-		System.out.println(getTLD("yunhou.com.cn"));
+    public static void main(String[] args) throws IOException {
+    	
+    	StringBuffer sb = new StringBuffer();
+    	
+		System.out.println(sb.toString().equals(""));
 	}
 }

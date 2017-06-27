@@ -13,7 +13,7 @@ public class NsLookup {
 
 	public static void main(String[] args) {
 		
-		 String name = "yunhou.com";
+		 String name = "www.taobao.com";
 		 System.out.println(lookupIP(name));
 	}
 	

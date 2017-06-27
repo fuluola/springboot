@@ -21,8 +21,9 @@ public class AddressIp {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		AddressMessage address = ObjectMapperFactory.JSON.readValue(getAddressByIp("ip=124.232.133.243"), AddressMessage.class);
+		AddressMessage address = ObjectMapperFactory.JSON.readValue(getAddressByIp("ip=113.57.228.95"), AddressMessage.class);
 		System.out.println(address.getData().getCity());
+		//System.out.println(getAddressByIp("ip=113.57.228.95"));
 	}
  
 }

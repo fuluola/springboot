@@ -11,6 +11,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
 /** 
  * @description 
  * @author  fuzhuan fu.luola@qq.com
@@ -22,9 +24,15 @@ public class WebUtil {
 	public static final String CONTENT_TYPE_XML = "application/xml;charset=utf-8";
 	public static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded;charset=utf-8";
 	
+	public static final String SEPARATOR = "\n";
 	public static String get(String path,String keyValue) throws IOException{
 		
-        URL url = new URL(path.trim()+"?"+keyValue);
+		URL url = null;
+		if(StringUtils.isEmpty(keyValue)){
+			url = new URL(path.trim());
+		}else{
+			url = new URL(path.trim()+"?"+keyValue);
+		}
         //打开连接
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(30 * 1000);
@@ -34,7 +42,7 @@ public class WebUtil {
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 		String line = "";
 		while ((line = reader.readLine()) != null) {
-			buffer.append(line);
+			buffer.append(line).append(SEPARATOR);
 		}
 		reader.close();
 		conn.disconnect();
