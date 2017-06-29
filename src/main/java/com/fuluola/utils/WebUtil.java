@@ -36,7 +36,7 @@ public class WebUtil {
         //打开连接
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(30 * 1000);
-        conn.setReadTimeout(80 * 1000);
+        conn.setReadTimeout(20 * 1000);
         conn.setUseCaches(false);    
         StringBuffer buffer = new StringBuffer();
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));

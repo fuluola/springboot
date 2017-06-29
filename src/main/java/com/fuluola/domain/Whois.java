@@ -31,17 +31,19 @@ public class Whois {
             server = "whois.cnnic.cn";  
         } else if ("jp".equals(tld)) {  
             server = "whois.jprs.jp";  
-        } else if ("kr".equals(tld)) {  
-            server = "whois.kr";  
+        } else if ("tw".equals(tld)) {  
+            server = "whois.twnic.tw";  
         }else if("io".equals(tld)){
         	server = "whois.nic.io";
         }else if("me".equals(tld)){
         	server = "whois.nic.me";
+        }else if("hk".equals(tld)){
+        	server = "whois.hkirc.hk";
         }
-        return query(domain, server);  
+        return queryComWhoisServer(domain, server);  
     }  
       
-    public String query(String domain, String server) throws Exception {  
+    public String queryComWhoisServer(String domain, String server) throws Exception {  
         Socket socket = new Socket();  
         SocketAddress  remoteAddr=new InetSocketAddress(server, DEFAULT_PORT);
         socket.connect(remoteAddr, 15*1000);
@@ -113,7 +115,7 @@ public class Whois {
         long start=System.currentTimeMillis();
        // for(int i=0;i<100;i++){
         	
-        	System.out.println(w.query("amazon-pet.com"));  
+        System.out.println(w.query("mia.com"));  
       //  }
         System.out.println("用时: "+(System.currentTimeMillis()-start));
 
