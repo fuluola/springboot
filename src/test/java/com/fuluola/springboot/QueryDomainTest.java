@@ -19,7 +19,7 @@ import com.fuluola.domain.DomainQueryThread;
 public class QueryDomainTest {
 	
 	public static void main(String[] args) throws Exception {
-		 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("E://软件是用来赚钱的//域名采集//22.txt"),"UTF-8"));
+		 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("E://域名采集项目//22.txt"),"UTF-8"));
 		 String line = "";
 		 List<String> domains = new ArrayList<String>();
 		 while ((line = reader.readLine()) != null) {
@@ -30,7 +30,7 @@ public class QueryDomainTest {
 			
 			String domain = domains.get(i).replace("www.", "");
 			new Thread(new DomainQueryThread(domain)).start();
-			Thread.sleep(200);
+			Thread.sleep(300);
 		 }
 	}
 }

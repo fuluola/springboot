@@ -9,6 +9,10 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.PrintStream;
 
+import com.fuluola.model.Constants;
+import com.fuluola.model.DomainObject;
+import com.fuluola.model.QueryDomainRespMessage;
+
 /**
  * @author fuluola
  *
@@ -27,21 +31,23 @@ public class DomainQueryThread implements Runnable{
 		Whois who = new Whois();
 		try {
 			PrintStream pr=null;
-			String outstr = who.query(domain);
-			if("".equals(outstr)){
-				FileWriter output = new FileWriter("E:\\软件是用来赚钱的\\域名采集\\失败.txt",true);
-				output.append(domain+"\n");
+			QueryDomainRespMessage respMsg = who.query(domain);
+	
+			if(Constants.FAIL.equals(respMsg.getCode())){
+				FileWriter output = new FileWriter("E://域名采集项目//fail.txt",true);
+				output.append(domain+">>>>>"+respMsg.getExceptionMsg()+"\n");
 				output.flush();
 				output.close();
-			}else{
-				
-				File output = new File("E://软件是用来赚钱的//域名采集//output//"+domain+".txt");
-//				if(!output.exists()){
-//					output.mkdirs();
-//				}
+			}else if(Constants.SUCCESS.equals(respMsg.getCode())){
+				File output = new File("E://域名采集项目//output2//"+domain+".txt");
+
 				pr = new PrintStream(new FileOutputStream(output));
-				pr.print(outstr);
+				pr.print(respMsg.getSuccResultStr());
 				pr.close();
+				FileWriter output2 = new FileWriter("E://域名采集项目//success.txt",true);
+				output2.append(respMsg.getObj().toString()+"\n");
+				output2.flush();
+				output2.close();
 			}
 			
 		} catch (Exception e) {

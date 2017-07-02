@@ -13,16 +13,21 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
+import com.fuluola.model.Constants;
+import com.fuluola.model.DomainObject;
+import com.fuluola.model.QueryDomainRespMessage;
+import com.fuluola.utils.ParseResultDomainInfo;
+
 public class Whois {  
 
     private static final int DEFAULT_PORT = 43;  
     static String[] urls = new String[]{"=baidu.com","ele.me","csdn.net"};
       //grs-whois.hichina.com whois.paycenter.com.cn whois.markmonitor.com whois.verisign-grs.com
-    public String query(String domain) throws Exception {  
+    public QueryDomainRespMessage query(String domain) throws Exception {  
         String server = "";  
         String tld = getTLD(domain);  
         if ("com".equals(tld)) {  
-          server = "whois.verisign-grs.com";  
+        	return queryComWhoisServer(domain, "whois.verisign-grs.com");  
         } else if ("net".equals(tld)) {  
             server = "whois.networksolutions.com";  
         } else if ("org".equals(tld)) {  
@@ -40,49 +45,80 @@ public class Whois {
         }else if("hk".equals(tld)){
         	server = "whois.hkirc.hk";
         }
-        return queryComWhoisServer(domain, server);  
+        return  null;
     }  
-      
-    public String queryComWhoisServer(String domain, String server) throws Exception {  
+    /**
+     * 查询.com域名whois信息
+     * @date 2017年7月2日上午11:27:09
+     * @author fuzhuan
+     * @param domain
+     * @param server
+     * @return
+     *
+     */
+    public QueryDomainRespMessage queryComWhoisServer(String domain, String server) {  
         Socket socket = new Socket();  
         SocketAddress  remoteAddr=new InetSocketAddress(server, DEFAULT_PORT);
-        socket.connect(remoteAddr, 15*1000);
-        socket.setSoTimeout(10 * 1000);  
-        String lineSeparator = "\r\n";  
-        PrintWriter out = new PrintWriter(socket.getOutputStream());  
-        out.println(domain);  
-        out.flush();  
-  
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
-        StringBuilder ret = new StringBuilder();  
-        String line;  
+        PrintWriter out = null;
+        String lineSeparator = "\r\n",line="";  
         String whoisServer=null;
-        while ((line = in.readLine()) != null) {
-        	if(line.contains("Whois Server:")){
-        		whoisServer=line.substring(line.indexOf(":")+1).trim();
-        		break;
-        	}
-        	//ret.append(line + lineSeparator);  
-        	
-        }  
-        socket.close();  
+        StringBuilder ret = new StringBuilder();  
+        DomainObject obj = new DomainObject();
+        QueryDomainRespMessage respMsg = new QueryDomainRespMessage();
+        try {
+			socket.connect(remoteAddr, 15*1000);
+			socket.setSoTimeout(20 * 1000);  
+		    out = new PrintWriter(socket.getOutputStream());  
+		    out.println(domain);  
+		    out.flush();  
+		    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
+	        
+	        while ((line = in.readLine()) != null) {
+	        	if(line.contains("Whois Server:")){
+	        		whoisServer=line.substring(line.indexOf(":")+1).trim();
+	        		break;
+	        	}
+	        }  
+	        socket.close(); 
+		} catch (IOException e) {
+			respMsg.setCode(Constants.FAIL);
+			respMsg.setExceptionMsg(e.getMessage());
+			e.printStackTrace();
+
+		}
         if(whoisServer!=null){
         	
+        	obj.setDomainName(domain);
             Socket socket2 = new Socket();  
             SocketAddress  remoteAddr2=new InetSocketAddress(whoisServer, DEFAULT_PORT);
-            socket2.connect(remoteAddr2, 15*1000);
-        	socket2.setSoTimeout(10 * 1000);  
-        	out = new PrintWriter(socket2.getOutputStream());  
-        	out.println(domain);  
-        	out.flush(); 
-        	BufferedReader in2 = new BufferedReader(new InputStreamReader(socket2.getInputStream()));  
-        	while((line=in2.readLine())!=null){
-        		ret.append(line + lineSeparator);  
-        	}
-        	out.close();
-        	socket2.close();
+            try {
+				socket2.connect(remoteAddr2, 15*1000);
+				socket2.setSoTimeout(20 * 1000);  
+	        	out = new PrintWriter(socket2.getOutputStream());  
+	        	out.println(domain);  
+	        	out.flush(); 
+	        	BufferedReader in2 = new BufferedReader(new InputStreamReader(socket2.getInputStream()));  
+	        	while((line=in2.readLine())!=null){
+	        		ret.append(line + lineSeparator);  
+	        		ParseResultDomainInfo.parseComDomainInfo(obj, line);
+	        	}
+	        	respMsg.setCode(Constants.SUCCESS);
+	        	respMsg.setObj(obj);
+	        	respMsg.setSuccResultStr(ret.toString());
+			} catch (IOException e) {
+				respMsg.setCode(Constants.FAIL);
+				respMsg.setExceptionMsg(e.getMessage());
+				e.printStackTrace();
+			}finally{
+			   	out.close();
+	        	try {
+					socket2.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
         }
-        return ret.toString();  
+        return respMsg;  
     }  
     
     public String queryWhoisServer(String domain,String server) throws UnknownHostException, IOException {
@@ -115,7 +151,7 @@ public class Whois {
         long start=System.currentTimeMillis();
        // for(int i=0;i<100;i++){
         	
-        System.out.println(w.query("mia.com"));  
+        System.out.println(w.queryWhoisServer("jovifs.com", "whois.net-chinese.com.tw"));  
       //  }
         System.out.println("用时: "+(System.currentTimeMillis()-start));
 
