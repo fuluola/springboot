@@ -13,11 +13,14 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
+import org.springframework.stereotype.Service;
+
 import com.fuluola.model.Constants;
 import com.fuluola.model.DomainObject;
 import com.fuluola.model.QueryDomainRespMessage;
 import com.fuluola.utils.ParseResultDomainInfo;
 
+@Service
 public class Whois {  
 
     private static final int DEFAULT_PORT = 43;  

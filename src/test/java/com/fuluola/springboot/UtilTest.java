@@ -6,6 +6,7 @@ package com.fuluola.springboot;
 
 import java.io.IOException;
 
+import com.fuluola.model.HtmlHead;
 import com.fuluola.utils.WebUtil;
 
 /**
@@ -22,7 +23,9 @@ public class UtilTest {
     public static void main(String[] args) throws IOException {
     	
     	StringBuffer sb = new StringBuffer();
-    	
-		System.out.println(sb.toString().equals(""));
+    	String domain = "baidu.com".replace("www.", "");
+    	HtmlHead hh = WebUtil.getHtmlHead("www.cnhnb.com");
+		System.out.println(hh.getTitle());
+		System.out.println(WebUtil.get("http://www.baidu.com",""));
 	}
 }

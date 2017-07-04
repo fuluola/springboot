@@ -2,16 +2,15 @@ package com.fuluola.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.springframework.util.StringUtils;
+
+import com.fuluola.model.HtmlHead;
 
 /** 
  * @description 
@@ -47,6 +46,35 @@ public class WebUtil {
 		reader.close();
 		conn.disconnect();
 		return buffer.toString();
+	}
+	
+	public static HtmlHead getHtmlHead(String path) throws IOException{
+		
+		if(!path.contains("http://")){
+			path = "http://"+path.trim();
+		}
+		URL url =  new URL(path);
+		
+        //打开连接
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(30 * 1000);
+        conn.setReadTimeout(20 * 1000);
+        conn.setUseCaches(false);    
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+		String line = "";
+		HtmlHead hh = new HtmlHead();
+		while ((line = reader.readLine()) != null) {
+			String regtitle = "<title>\\S+</title>\\S*";
+			Pattern pattitle = Pattern.compile(regtitle);
+			if(pattitle.matcher(line).matches()){
+				line=line.replace("<title>", "");
+				line=line.replace("</title>", "");
+				hh.setTitle(line);
+			}
+		}
+		reader.close();
+		conn.disconnect();
+		return hh;
 	}
 	/**
 	 * Post方式请求
