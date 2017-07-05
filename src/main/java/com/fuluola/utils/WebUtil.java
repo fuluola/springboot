@@ -7,8 +7,12 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.util.StringUtils;
 
 import com.fuluola.model.HtmlHead;
@@ -51,50 +55,23 @@ public class WebUtil {
 	
 	public static HtmlHead getHtmlHead(String path) {
 		
-		if(!path.contains("http://")){
+		if(!path.contains("http://") && !path.contains("https://")){
 			path = "http://"+path.trim();
 		}
-		URL url;
-		BufferedReader reader = null;
-		HttpURLConnection conn=null;
-		HtmlHead hh = new HtmlHead();
+    	Connection.Response response;
 		try {
-			url = new URL(path);
-	        //打开连接
-	        conn = (HttpURLConnection) url.openConnection();
-	        conn.setConnectTimeout(30 * 1000);
-	        conn.setReadTimeout(20 * 1000);
-	        conn.setUseCaches(false);    
-	        reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String line = "";
-			
-			while ((line = reader.readLine()) != null) {
-				String regtitle = "[\\s\\S]*<title>[\\s\\S]+</title>[\\s\\S]*";
-				Pattern pattitle = Pattern.compile(regtitle);
-				if(pattitle.matcher(line).matches()){
-					line=line.replaceAll("[\\s\\S]*<title>", "");
-					line=line.replaceAll("</title>[\\s\\S]*", "");
-					hh.setTitle(line);
-				}
-			}
+			response = Jsoup.connect("http://www.cnhnb.com").execute();
 		} catch (IOException e) {
 			e.printStackTrace();
-			hh.setTitle(e.getMessage());
-		}finally{
-			if(reader!=null){
-				
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if(conn!=null){
-				conn.disconnect();
-			}
+			return null;
 		}
-		
-
+    	String body = response.body();
+    	Document document = Jsoup.parse(body);
+    	String title = document.head().select("title").text();
+    	String keywords = document.head().select("meta[name=keywords]").attr("content");
+    	HtmlHead hh=new HtmlHead();
+    	hh.setKeywords(keywords);
+    	hh.setTitle(title);
 		return hh;
 	}
 	/**
