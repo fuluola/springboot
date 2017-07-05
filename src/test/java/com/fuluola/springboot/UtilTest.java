@@ -5,6 +5,7 @@
 package com.fuluola.springboot;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import com.fuluola.model.HtmlHead;
 import com.fuluola.utils.WebUtil;
@@ -21,11 +22,11 @@ public class UtilTest {
                 : (index < (domain.length())) ? domain.substring(index) : "";  
     }  
     public static void main(String[] args) throws IOException {
-    	
-    	StringBuffer sb = new StringBuffer();
+
     	String domain = "baidu.com".replace("www.", "");
-    	HtmlHead hh = WebUtil.getHtmlHead("www.cnhnb.com");
+    	HtmlHead hh = WebUtil.getHtmlHead("http://www.runoob.com");
 		System.out.println(hh.getTitle());
-		System.out.println(WebUtil.get("http://www.baidu.com",""));
+		System.out.println(WebUtil.get("http://www.runoob.com",""));
+
 	}
 }

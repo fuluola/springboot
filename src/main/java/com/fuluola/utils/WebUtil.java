@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
@@ -48,32 +49,52 @@ public class WebUtil {
 		return buffer.toString();
 	}
 	
-	public static HtmlHead getHtmlHead(String path) throws IOException{
+	public static HtmlHead getHtmlHead(String path) {
 		
 		if(!path.contains("http://")){
 			path = "http://"+path.trim();
 		}
-		URL url =  new URL(path);
-		
-        //打开连接
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setConnectTimeout(30 * 1000);
-        conn.setReadTimeout(20 * 1000);
-        conn.setUseCaches(false);    
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
-		String line = "";
+		URL url;
+		BufferedReader reader = null;
+		HttpURLConnection conn=null;
 		HtmlHead hh = new HtmlHead();
-		while ((line = reader.readLine()) != null) {
-			String regtitle = "<title>\\S+</title>\\S*";
-			Pattern pattitle = Pattern.compile(regtitle);
-			if(pattitle.matcher(line).matches()){
-				line=line.replace("<title>", "");
-				line=line.replace("</title>", "");
-				hh.setTitle(line);
+		try {
+			url = new URL(path);
+	        //打开连接
+	        conn = (HttpURLConnection) url.openConnection();
+	        conn.setConnectTimeout(30 * 1000);
+	        conn.setReadTimeout(20 * 1000);
+	        conn.setUseCaches(false);    
+	        reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = "";
+			
+			while ((line = reader.readLine()) != null) {
+				String regtitle = "[\\s\\S]*<title>[\\s\\S]+</title>[\\s\\S]*";
+				Pattern pattitle = Pattern.compile(regtitle);
+				if(pattitle.matcher(line).matches()){
+					line=line.replaceAll("[\\s\\S]*<title>", "");
+					line=line.replaceAll("</title>[\\s\\S]*", "");
+					hh.setTitle(line);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			hh.setTitle(e.getMessage());
+		}finally{
+			if(reader!=null){
+				
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null){
+				conn.disconnect();
 			}
 		}
-		reader.close();
-		conn.disconnect();
+		
+
 		return hh;
 	}
 	/**
