@@ -30,10 +30,10 @@ public class ParseResultDomainInfo {
 			obj.setRegistrantPhone((StringUtils.isEmptyOrWhitespaceOnly(rp)?"":rp).trim());
 		}else if(line.startsWith("Registrant Email:")){
 			obj.setRegistrantEmail(line.split(":")[1].trim());
-		}else if(line.startsWith("Name Server")){
+		}else if(line.startsWith("Name Server") && StringUtils.isNullOrEmpty(obj.getNsServer())){
 			obj.setNsServer(line.split(":")[1]);
-		}else if(line.startsWith("Name Server")){
-			obj.setNsServer(line.split(":")[1]);
+		}else if(line.startsWith("Name Server") && !StringUtils.isNullOrEmpty(obj.getNsServer()) && !StringUtils.isNullOrEmpty(obj.getDnsServer())){
+			obj.setDnsServer(line.split(":")[1]);
 		}
 		return obj;
 	}
