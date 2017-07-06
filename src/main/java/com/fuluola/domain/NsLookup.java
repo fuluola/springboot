@@ -21,7 +21,10 @@ public class NsLookup {
 	private final static String IP_ADDRESS_URL = "http://ip.taobao.com/service/getIpInfo.php";
 	public static void main(String[] args) {
 		 NsLookup ns = new NsLookup();
-		 String name = "www.taobao.com";
+		 String name = "dianping.com";
+		 String ip = ns.lookUpIP(name);
+		 System.out.println(ip);
+		 System.out.println(ns.getAddressCityByIp("ip="+ip));
 	}
 	
 	public  String lookUpIP(String host){

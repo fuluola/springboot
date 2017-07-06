@@ -60,7 +60,7 @@ public class WebUtil {
 		}
     	Connection.Response response;
 		try {
-			response = Jsoup.connect("http://www.cnhnb.com").execute();
+			response = Jsoup.connect(path).execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -69,9 +69,11 @@ public class WebUtil {
     	Document document = Jsoup.parse(body);
     	String title = document.head().select("title").text();
     	String keywords = document.head().select("meta[name=keywords]").attr("content");
+    	String description = document.head().select("meta[name=description]").attr("content");
     	HtmlHead hh=new HtmlHead();
     	hh.setKeywords(keywords);
     	hh.setTitle(title);
+    	hh.setDescription(description);
 		return hh;
 	}
 	/**

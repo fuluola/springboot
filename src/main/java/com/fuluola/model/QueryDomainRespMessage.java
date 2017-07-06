@@ -12,7 +12,7 @@ public class QueryDomainRespMessage {
 
 	private String code;//0,success，1 异常
 	private String succResultStr;
-	private DomainObject obj;
+	private DomainObject domainObject;
 	private String exceptionMsg; //异常信息
 	/**
 	 * @return the code
@@ -38,17 +38,12 @@ public class QueryDomainRespMessage {
 	public void setSuccResultStr(String succResultStr) {
 		this.succResultStr = succResultStr;
 	}
-	/**
-	 * @return the obj
-	 */
-	public DomainObject getObj() {
-		return obj;
+	
+	public DomainObject getDomainObject() {
+		return domainObject;
 	}
-	/**
-	 * @param obj the obj to set
-	 */
-	public void setObj(DomainObject obj) {
-		this.obj = obj;
+	public void setDomainObject(DomainObject domainObject) {
+		this.domainObject = domainObject;
 	}
 	/**
 	 * @return the exceptionMsg

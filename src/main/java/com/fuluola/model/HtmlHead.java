@@ -1,6 +1,5 @@
 package com.fuluola.model;
 
-import java.util.List;
 
 /** 
  * @description 
@@ -11,7 +10,7 @@ public class HtmlHead {
 
 	private String title;
 	private String keywords;
-	private List<String> metas ;
+	private String description ;
 	
 	public String getTitle() {
 		return title;
@@ -25,12 +24,14 @@ public class HtmlHead {
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
-	public List<String> getMetas() {
-		return metas;
+	public String getDescription() {
+		return description;
 	}
-	public void setMetas(List<String> metas) {
-		this.metas = metas;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
-	
+	public String toString(){
+		return this.title+"\n"+this.keywords+"\n"+this.description;
+	}
 }

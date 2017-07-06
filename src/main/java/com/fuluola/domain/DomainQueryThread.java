@@ -28,7 +28,7 @@ public class DomainQueryThread implements Runnable{
 	 */
 	public void run() {
 		
-		Whois who = new Whois();
+		WhoisService who = new WhoisService();
 		try {
 			PrintStream pr=null;
 			QueryDomainRespMessage respMsg = who.query(domain);
@@ -45,7 +45,7 @@ public class DomainQueryThread implements Runnable{
 				pr.print(respMsg.getSuccResultStr());
 				pr.close();
 				FileWriter output2 = new FileWriter("E://域名采集项目//success.txt",true);
-				output2.append(respMsg.getObj().toString()+"\n");
+				output2.append(respMsg.getDomainObject().toString()+"\n");
 				output2.flush();
 				output2.close();
 			}

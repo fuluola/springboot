@@ -21,12 +21,12 @@ import com.fuluola.model.QueryDomainRespMessage;
 import com.fuluola.utils.ParseResultDomainInfo;
 
 @Service
-public class Whois {  
+public class WhoisService {  
 
     private static final int DEFAULT_PORT = 43;  
     static String[] urls = new String[]{"=baidu.com","ele.me","csdn.net"};
       //grs-whois.hichina.com whois.paycenter.com.cn whois.markmonitor.com whois.verisign-grs.com
-    public QueryDomainRespMessage query(String domain) throws Exception {  
+    public QueryDomainRespMessage query(String domain)  {  
         String server = "";  
         String tld = getTLD(domain);  
         if ("com".equals(tld)) {  
@@ -106,7 +106,7 @@ public class Whois {
 	        		ParseResultDomainInfo.parseComDomainInfo(obj, line);
 	        	}
 	        	respMsg.setCode(Constants.SUCCESS);
-	        	respMsg.setObj(obj);
+	        	respMsg.setDomainObject(obj);
 	        	respMsg.setSuccResultStr(ret.toString());
 			} catch (IOException e) {
 				respMsg.setCode(Constants.FAIL);
@@ -149,7 +149,7 @@ public class Whois {
     }  
       
     public static void main(String[] args) throws Exception {  
-        Whois w = new Whois();  
+    	WhoisService w = new WhoisService();  
       //  System.out.println(w.query("spring.io")); 
         long start=System.currentTimeMillis();
        // for(int i=0;i<100;i++){
