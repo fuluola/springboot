@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fuluola.domain.NsLookup;
 import com.fuluola.domain.WhoisService;
@@ -17,19 +18,17 @@ import com.fuluola.domain.WhoisService;
  * @author  fuzhuan fu.luola@qq.com
  * @date 2017年7月6日 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = DomainSpringTest.class)  
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)  
 public class DomainSpringTest {
 
     protected final static Logger logger = LoggerFactory.getLogger(DomainSpringTest.class);
-    @Autowired
-	private NsLookup nsLookup;
+
     @Autowired
 	private WhoisService whoisService ;
-
 	
 	@Test
-	public void testSome() {
-		System.out.println(whoisService);
+	public void test() {
+		System.out.println(whoisService.query("jd.com"));
 	}
 }
