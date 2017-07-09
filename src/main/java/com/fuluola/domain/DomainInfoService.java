@@ -31,15 +31,11 @@ public class DomainInfoService {
 		HtmlHead hh = WebUtil.getHtmlHead(domain);
 		domainInfo.setTitle(hh.getTitle());
 		domainInfo.setKeywords(hh.getKeywords());
-		domainInfo.setMeta(hh.getDescription());
+		domainInfo.setDiscription(hh.getDescription());
 		domainInfo.setIp(ip);
 		domainInfo.setIpAddress(city);
 		return respMessage;
 		
 	}
 	
-	public static void main(String[] args) {
-		DomainInfoService service = new DomainInfoService();
-		service.domainInfoQuery("yunhou.com");
-	}
 }

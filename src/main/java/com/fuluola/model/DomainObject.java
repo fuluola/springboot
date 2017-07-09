@@ -26,7 +26,7 @@ public class DomainObject {
 	private String ipAddress;
 	private String title;
 	private String keywords;
-	private String meta;
+	private String discription;
 	private String googlePR;
 	/**
 	 * @return the domainName
@@ -187,14 +187,14 @@ public class DomainObject {
 	/**
 	 * @return the meta
 	 */
-	public String getMeta() {
-		return meta;
+	public String getDiscription() {
+		return discription;
 	}
 	/**
 	 * @param meta the meta to set
 	 */
-	public void setMeta(String meta) {
-		this.meta = meta;
+	public void setDiscription(String discription) {
+		this.discription = discription;
 	}
 	/**
 	 * @return the googlePR

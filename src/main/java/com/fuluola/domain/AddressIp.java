@@ -24,6 +24,7 @@ public class AddressIp {
 		AddressMessage address = ObjectMapperFactory.JSON.readValue(getAddressByIp("ip=113.57.228.95"), AddressMessage.class);
 		System.out.println(address.getData().getCity());
 		//System.out.println(getAddressByIp("ip=113.57.228.95"));
+		System.out.println(WebUtil.getHtmlHead("webmasterhome.cn"));
 	}
  
 }

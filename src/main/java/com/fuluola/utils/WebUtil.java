@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,7 +54,7 @@ public class WebUtil {
 		return buffer.toString();
 	}
 	
-	public static HtmlHead getHtmlHead(String path) {
+	public static HtmlHead getHtmlHead(String path)  {
 		
 		if(!path.contains("http://") && !path.contains("https://")){
 			path = "http://"+path.trim();
@@ -65,11 +66,25 @@ public class WebUtil {
 			e.printStackTrace();
 			return null;
 		}
+		//<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     	String body = response.body();
     	Document document = Jsoup.parse(body);
-    	String title = document.head().select("title").text();
-    	String keywords = document.head().select("meta[name=keywords]").attr("content");
-    	String description = document.head().select("meta[name=description]").attr("content");
+    	String title="",keywords="",description="";
+    	String contentType =  document.head().select("meta[http-equiv=Content-Type]").attr("content");
+    	if(contentType.contains("gb2312") || contentType.contains("gbk")){
+    		try {
+				title = new String(document.head().select("title").text().getBytes(),"gb2312");
+				keywords = new String(document.head().select("meta[name=keywords]").attr("content").getBytes(),"gb2312");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+    		
+    	}else{
+    		
+    		title = document.head().select("title").text();
+    		keywords = document.head().select("meta[name=keywords]").attr("content");
+    		description = document.head().select("meta[name=description]").attr("content");
+    	}
     	HtmlHead hh=new HtmlHead();
     	hh.setKeywords(keywords);
     	hh.setTitle(title);
