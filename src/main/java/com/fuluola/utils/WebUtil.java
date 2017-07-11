@@ -4,14 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
-import java.util.regex.Pattern;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.util.StringUtils;
@@ -59,32 +54,24 @@ public class WebUtil {
 		if(!path.contains("http://") && !path.contains("https://")){
 			path = "http://"+path.trim();
 		}
-    	Connection.Response response;
+    //	Connection.Response response;
+    	Document document = null;
 		try {
-			response = Jsoup.connect(path).execute();
+			document = Jsoup.parse(new URL(path).openStream(),"utf-8",path);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 		//<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    	String body = response.body();
-    	Document document = Jsoup.parse(body);
+    //	String body = response.body();
+    //	Document document = Jsoup.parse(body);
     	String title="",keywords="",description="";
-    	String contentType =  document.head().select("meta[http-equiv=Content-Type]").attr("content");
-    	if(contentType.contains("gb2312") || contentType.contains("gbk")){
-    		try {
-				title = new String(document.head().select("title").text().getBytes(),"gb2312");
-				keywords = new String(document.head().select("meta[name=keywords]").attr("content").getBytes(),"gb2312");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-    		
-    	}else{
-    		
-    		title = document.head().select("title").text();
-    		keywords = document.head().select("meta[name=keywords]").attr("content");
-    		description = document.head().select("meta[name=description]").attr("content");
-    	}
+    //	String contentType =  document.head().select("meta[http-equiv=Content-Type]").attr("content");
+
+		title = document.head().select("title").text();
+		keywords = document.head().select("meta[name=keywords]").attr("content");
+		description = document.head().select("meta[name=description]").attr("content");
+
     	HtmlHead hh=new HtmlHead();
     	hh.setKeywords(keywords);
     	hh.setTitle(title);

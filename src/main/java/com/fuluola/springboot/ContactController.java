@@ -4,17 +4,24 @@
  */
 package com.fuluola.springboot;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fuluola.domain.DomainInfoService;
-import com.fuluola.model.QueryDomainRespMessage;
+import com.fuluola.utils.ParseResultDomainInfo;
 
 /**
  * @author fuluola
@@ -25,11 +32,13 @@ import com.fuluola.model.QueryDomainRespMessage;
 public class ContactController {
 
 	private ContactRepository contactRepo;
-	
+    private static final Logger logger = LoggerFactory.getLogger(ContactController.class);
+    
 	@Autowired
 	public ContactController(ContactRepository contactRepo){
 		this.contactRepo = contactRepo;
 	}
+	
     @Autowired
 	private DomainInfoService domainService ;
     
@@ -39,10 +48,27 @@ public class ContactController {
 		model.put("contacts", contacts);
 		return "home";
 	}
+
+	@RequestMapping(value="importInit",method=RequestMethod.GET)
+	public String domainImport(Map<String,Object> model){
+		return "domainImport";
+	}
 	
 	@ResponseBody
-	@RequestMapping(value="domain",method=RequestMethod.GET)
-	public QueryDomainRespMessage domain(String domain){
-		return domainService.domainInfoQuery(domain);
+	@RequestMapping(value="importDomain",method=RequestMethod.POST)
+	public String importDomain(@RequestParam(value = "file", required = true) MultipartFile file) throws IOException{
+		String resultStr = "导入成功!",line;
+        String fileName=file.getOriginalFilename();
+        logger.info("导入文件名:"+fileName);
+        String suffix = fileName.substring(fileName.lastIndexOf(".")+1);
+        if(!"txt".equals(suffix)){
+        	resultStr="请导入文本格式文件";
+        }else{
+        	BufferedReader in = new BufferedReader(new InputStreamReader( file.getInputStream()));
+          	while((line=in.readLine())!=null){
+         		System.out.println(line);
+         	}
+        }
+		return resultStr;
 	}
 }
