@@ -31,9 +31,11 @@ import com.fuluola.utils.ParseResultDomainInfo;
 @RequestMapping("/home")
 public class ContactController {
 
+	private static final Logger logger = LoggerFactory.getLogger(ContactController.class);
 	private ContactRepository contactRepo;
-    private static final Logger logger = LoggerFactory.getLogger(ContactController.class);
     
+	@Autowired
+	private DomainRepository domainRepo;
 	@Autowired
 	public ContactController(ContactRepository contactRepo){
 		this.contactRepo = contactRepo;
@@ -66,7 +68,7 @@ public class ContactController {
         }else{
         	BufferedReader in = new BufferedReader(new InputStreamReader( file.getInputStream()));
           	while((line=in.readLine())!=null){
-         		System.out.println(line);
+          		domainRepo.insertDomain(line);
          	}
         }
 		return resultStr;

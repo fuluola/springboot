@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Configurable
 @EnableScheduling
 public class ScheduledTasks{
-
+	//30秒执行一次
     @Scheduled(fixedRate = 1000 * 30)
     public void reportCurrentTime(){
         System.out.println ("Scheduling Tasks Examples: The time is now " + dateFormat ().format (new Date ()));
