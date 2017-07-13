@@ -59,17 +59,23 @@ public class ContactController {
 	@ResponseBody
 	@RequestMapping(value="importDomain",method=RequestMethod.POST)
 	public String importDomain(@RequestParam(value = "file", required = true) MultipartFile file) throws IOException{
-		String resultStr = "导入成功!",line;
+		int totalRow = 0;
+		String resultStr = "",line;
         String fileName=file.getOriginalFilename();
         logger.info("导入文件名:"+fileName);
         String suffix = fileName.substring(fileName.lastIndexOf(".")+1);
         if(!"txt".equals(suffix)){
         	resultStr="请导入文本格式文件";
         }else{
-        	BufferedReader in = new BufferedReader(new InputStreamReader( file.getInputStream()));
+        	BufferedReader in = new BufferedReader(new InputStreamReader( file.getInputStream(),"utf-8"));
           	while((line=in.readLine())!=null){
-          		domainRepo.insertDomain(line);
+          		int succRow = domainRepo.insertDomain(line);
+          		totalRow+=succRow;
+          		if(succRow==1){
+          			logger.info(line+" 成功插入数据库!");
+          		}
          	}
+          	resultStr="成功导入"+totalRow+"个域名!";
         }
 		return resultStr;
 	}

@@ -24,14 +24,17 @@ public class DomainInfoService {
 	
 	public QueryDomainRespMessage domainInfoQuery(String domain) {
 		QueryDomainRespMessage respMessage = whois.query(domain);
+		if(respMessage.getCode()==null) return null;
 		DomainObject domainInfo = respMessage.getDomainObject();
 		String ip = nslookUp.lookUpIP(domain);
 		String city = nslookUp.getAddressCityByIp("ip="+ip);
 		
 		HtmlHead hh = WebUtil.getHtmlHead(domain);
-		domainInfo.setTitle(hh.getTitle());
-		domainInfo.setKeywords(hh.getKeywords());
-		domainInfo.setDiscription(hh.getDescription());
+		if(hh!=null){
+			domainInfo.setTitle(hh.getTitle());
+			domainInfo.setKeywords(hh.getKeywords());
+			domainInfo.setDescription(hh.getDescription());
+		}
 		domainInfo.setIp(ip);
 		domainInfo.setIpAddress(city);
 		return respMessage;

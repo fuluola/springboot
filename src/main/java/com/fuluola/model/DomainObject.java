@@ -26,8 +26,10 @@ public class DomainObject {
 	private String ipAddress;
 	private String title;
 	private String keywords;
-	private String discription;
+	private String description;
 	private String googlePR;
+	private Date createTime;
+	
 	/**
 	 * @return the domainName
 	 */
@@ -184,17 +186,12 @@ public class DomainObject {
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
-	/**
-	 * @return the meta
-	 */
-	public String getDiscription() {
-		return discription;
+	
+	public String getDescription() {
+		return description;
 	}
-	/**
-	 * @param meta the meta to set
-	 */
-	public void setDiscription(String discription) {
-		this.discription = discription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	/**
 	 * @return the googlePR
@@ -207,6 +204,13 @@ public class DomainObject {
 	 */
 	public void setGooglePR(String googlePR) {
 		this.googlePR = googlePR;
+	}
+	
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 	
 	public String toString(){
