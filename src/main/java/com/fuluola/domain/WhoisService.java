@@ -27,6 +27,10 @@ public class WhoisService {
     static String[] urls = new String[]{"=baidu.com","ele.me","csdn.net"};
       //grs-whois.hichina.com whois.paycenter.com.cn whois.markmonitor.com whois.verisign-grs.com
     public QueryDomainRespMessage query(String domain)  {  
+    	
+    	if(domain.contains("www.")){
+    		domain = domain.replace("www.", "");
+    	}
         String server = "";  
         String tld = getTLD(domain);  
         if ("com".equals(tld)) {  

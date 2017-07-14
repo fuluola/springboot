@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,7 +28,8 @@ import com.fuluola.model.QueryDomainRespMessage;
  */
 @Repository
 public class DomainRepository {
-
+	
+	private static Logger logger = LoggerFactory.getLogger(DomainRepository.class);
 	private static String insertSQL = "insert into domain (domain,status,errorCount,createTime) values(?,0,0,now())"; 
 	private static String findSQL = "select domain,status,createTime,errorCount from domain where domain=?";
 	private static String processSQL = "select domain,status,errorCount,createTime from domain where status=0 and errorCount<3 order by createTime asc limit 50";
@@ -35,7 +38,7 @@ public class DomainRepository {
 	
 	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrantName,"
 			+ "registrantPhone,registrantEmail,nsServer,dnsServer,creationDate,expirationDate,ip,ipAddress,"
-			+ "title,keywords,discription,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
+			+ "title,keywords,discription,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
 	private JdbcTemplate jdbc;
 	
 	public DomainRepository(JdbcTemplate jdbc){
@@ -66,9 +69,9 @@ public class DomainRepository {
 	}
 	
 	@Transactional
-	public String processSingleDomain(String data){
+	public void processSingleDomain(String data){
 		QueryDomainRespMessage respMsg=infoService.domainInfoQuery(data);
-		if(respMsg==null) return null;
+		if(respMsg==null) return ;
 		if(Constants.SUCCESS.equals(respMsg.getCode())){
 			DomainObject domainInfo = respMsg.getDomainObject();
 			jdbc.update(updateSUCCESS_SQL, new Object[]{data});
@@ -78,16 +81,18 @@ public class DomainRepository {
 								domainInfo.getIp(),domainInfo.getIpAddress(),domainInfo.getTitle(),domainInfo.getKeywords(),
 								domainInfo.getDescription(),domainInfo.getGooglePR());
 		}else{
-			jdbc.update(updateERROR_SQL, new Object[]{data});
+			jdbc.update(updateERROR_SQL, new Object[]{respMsg.getExceptionMsg(),data});
 		}
-		return null;
 	}
 	
 	public String processBatchDomain(){
 		List<Map<String,Object>> list= queryProcessDomain();
+		logger.info("本次共处理"+list.size()+"条记录!");
 		if(list.size()>=1){
 			for(Map<String,Object> map:list){
-				processSingleDomain((String) map.get("domain"));
+				String domain = (String) map.get("domain");
+				logger.info("开始采集信息，域名："+domain);
+				processSingleDomain(domain);
 			}
 		}
 		return "";

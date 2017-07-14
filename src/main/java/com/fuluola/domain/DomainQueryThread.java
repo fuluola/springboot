@@ -9,8 +9,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.PrintStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fuluola.model.Constants;
-import com.fuluola.model.DomainObject;
 import com.fuluola.model.QueryDomainRespMessage;
 
 /**
@@ -23,6 +24,8 @@ public class DomainQueryThread implements Runnable{
 	public DomainQueryThread(String domain){
 		this.domain = domain;
 	}
+	@Autowired
+	private DomainInfoService infoService;
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */

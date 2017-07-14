@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.fuluola.domain.DomainInfoService;
 import com.fuluola.domain.WhoisService;
 import com.fuluola.model.QueryDomainRespMessage;
+import com.fuluola.springboot.DomainRepository;
 
 /** 
  * @description 
@@ -27,10 +28,17 @@ public class DomainSpringTest {
 	private WhoisService whoisService ;
 	@Autowired
 	private DomainInfoService infoService;
+	@Autowired
+	private DomainRepository domainRepo;
 	
-	@Test
+	//@Test
 	public void test() {
 		QueryDomainRespMessage msg = infoService.domainInfoQuery("webmasterhome.cn");
 		System.out.println(msg);
+	}
+	
+	@Test
+	public void test2(){
+		domainRepo.insertDomain("www.开始批量域名信息采集88.com");
 	}
 }
