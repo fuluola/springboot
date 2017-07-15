@@ -31,13 +31,13 @@ public class DomainSpringTest {
 	@Autowired
 	private DomainRepository domainRepo;
 	
-	//@Test
+	@Test
 	public void test() {
-		QueryDomainRespMessage msg = infoService.domainInfoQuery("webmasterhome.cn");
+		QueryDomainRespMessage msg = infoService.domainInfoQuery("www.telstek.com");
 		System.out.println(msg);
 	}
 	
-	@Test
+//	@Test
 	public void test2(){
 		domainRepo.insertDomain("www.开始批量域名信息采集88.com");
 	}

@@ -30,7 +30,11 @@ public class DomainInfoService {
 	public QueryDomainRespMessage domainInfoQuery(String domain) {
 		logger.info("开始采集whois信息,域名："+domain);
 		QueryDomainRespMessage respMessage = whois.query(domain);
-		if(respMessage.getCode()==null) return null;
+		if(respMessage==null)
+			return null;
+		if(respMessage.getCode()==null || respMessage.getDomainObject()==null){
+			return null;
+		}
 		DomainObject domainInfo = respMessage.getDomainObject();
 		domainInfo.setDomainName(domain);
 		logger.info("开始采集ip地址信息,域名："+domain);

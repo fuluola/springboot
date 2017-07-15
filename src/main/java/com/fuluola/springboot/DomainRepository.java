@@ -71,8 +71,9 @@ public class DomainRepository {
 	@Transactional
 	public void processSingleDomain(String data){
 		QueryDomainRespMessage respMsg=infoService.domainInfoQuery(data);
-		if(respMsg==null) return ;
-		if(Constants.SUCCESS.equals(respMsg.getCode())){
+		if(respMsg==null) {
+			jdbc.update(updateERROR_SQL, new Object[]{"该域名没有找到注册信息",data});
+		}else if(Constants.SUCCESS.equals(respMsg.getCode())){
 			DomainObject domainInfo = respMsg.getDomainObject();
 			jdbc.update(updateSUCCESS_SQL, new Object[]{data});
 			jdbc.update(insertDomainInfoSQL, domainInfo.getDomainName(),domainInfo.getRegistrantOrganization(),domainInfo.getRegistrantName(),
@@ -102,7 +103,7 @@ public class DomainRepository {
 
 class DomainResultSetExtractor implements ResultSetExtractor<PreDomainInfo> {
 
-	@Override
+
 	public PreDomainInfo extractData(ResultSet rs) throws SQLException,
 			DataAccessException {
 		
@@ -120,7 +121,7 @@ class DomainResultSetExtractor implements ResultSetExtractor<PreDomainInfo> {
 }
 class PreDomainRowMapper implements RowMapper<PreDomainInfo> {
 
-	@Override
+
 	public PreDomainInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
 		PreDomainInfo entity = new PreDomainInfo();
 		entity.setCreateTime(rs.getDate("createTime"));

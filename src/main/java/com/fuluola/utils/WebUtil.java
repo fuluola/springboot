@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.util.StringUtils;
@@ -54,20 +55,19 @@ public class WebUtil {
 		if(!path.contains("http://") && !path.contains("https://")){
 			path = "http://"+path.trim();
 		}
-    //	Connection.Response response;
-    	Document document = null;
+    	Connection.Response response=null;
 		try {
-			document = Jsoup.parse(new URL(path).openStream(),"utf-8",path);
+			//document = Jsoup.parse(new URL(path).openStream(),"utf-8",path);
+			response = Jsoup.connect(path).timeout(15*1000).execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 		//<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    //	String body = response.body();
-    //	Document document = Jsoup.parse(body);
+    	String body = response.body();
+    	Document document = Jsoup.parse(body);
     	String title="",keywords="",description="";
     //	String contentType =  document.head().select("meta[http-equiv=Content-Type]").attr("content");
-
 		title = document.head().select("title").text();
 		keywords = document.head().select("meta[name=keywords]").attr("content");
 		description = document.head().select("meta[name=description]").attr("content");

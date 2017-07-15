@@ -29,7 +29,7 @@ public class WhoisService {
     public QueryDomainRespMessage query(String domain)  {  
     	
     	if(domain.contains("www.")){
-    		domain = domain.replace("www.", "");
+    		domain = domain.replace("www.", "").trim();
     	}
         String server = "";  
         String tld = getTLD(domain);  
@@ -116,7 +116,7 @@ public class WhoisService {
         QueryDomainRespMessage respMsg = new QueryDomainRespMessage();
         try {
 			socket.connect(remoteAddr, 15*1000);
-			socket.setSoTimeout(20 * 1000);  
+			socket.setSoTimeout(15 * 1000);  
 		    out = new PrintWriter(socket.getOutputStream());  
 		    out.println(domain);  
 		    out.flush();  
@@ -272,7 +272,7 @@ public class WhoisService {
       //  System.out.println(w.query("spring.io")); 
         long start=System.currentTimeMillis();
         //QueryDomainRespMessage
-        String msg = w.queryWhoisServer("apache.org", "whois.pir.org");  
+        String msg = w.queryWhoisServer("geescomelec.com", "whois.verisign-grs.com");
 
         System.out.println("用时: "+(System.currentTimeMillis()-start));
         System.out.println(msg);
