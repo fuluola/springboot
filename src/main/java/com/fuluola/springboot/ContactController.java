@@ -41,8 +41,6 @@ public class ContactController {
 		this.contactRepo = contactRepo;
 	}
 	
-    @Autowired
-	private DomainInfoService domainService ;
     
 	@RequestMapping(method=RequestMethod.GET)
 	public String home(Map<String,Object> model){
@@ -78,5 +76,20 @@ public class ContactController {
           	resultStr="成功导入"+totalRow+"个域名!";
         }
 		return resultStr;
+	}
+	
+	@RequestMapping(value="domainResult",method=RequestMethod.GET)
+	public Object domainResult(Map<String,Object> model){
+	//	List<Map<String,Object>> resultMap = domainRepo.pageQueryDomainInfo(null);
+	//	model.put("model", resultMap);
+		return "pageDomainInfo";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="domainList",method=RequestMethod.POST)
+	public Object domainList(Map<String,Object> model){
+		List<Map<String,Object>> resultMap = domainRepo.pageQueryDomainInfo(null);
+	//	model.put("model", resultMap);
+		return resultMap;
 	}
 }

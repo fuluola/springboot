@@ -32,9 +32,11 @@ public class DomainRepository {
 	private static Logger logger = LoggerFactory.getLogger(DomainRepository.class);
 	private static String insertSQL = "insert into domain (domain,status,errorCount,createTime) values(?,0,0,now())"; 
 	private static String findSQL = "select domain,status,createTime,errorCount from domain where domain=?";
-	private static String processSQL = "select domain,status,errorCount,createTime from domain where status=0 and errorCount<3 order by createTime asc limit 50";
+	private static String processSQL = "select domain,status,errorCount,createTime from domain where status=0 and errorCount<3 order by createTime asc limit 200";
 	private static String updateSUCCESS_SQL = "update domain set status=1,errorMsg=null,updateTime=now() where domain=?";
 	private static String updateERROR_SQL = "update domain set errorMsg=?,errorCount=errorCount+1,updateTime=now() where domain=?";
+	
+	private static String pageQueryDomainInfo_SQL = "select * from domaininfo_collect limit 0,50";
 	
 	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrantName,"
 			+ "registrantPhone,registrantEmail,nsServer,dnsServer,creationDate,expirationDate,ip,ipAddress,"
@@ -99,6 +101,16 @@ public class DomainRepository {
 		return "";
 	}
 	
+	public List<Map<String,Object>> pageQueryDomainInfo(Map<String,Object> params){
+//		if(params!=null&&params.size()>0){
+//			for(String key:params.keySet()){
+//				
+//			}
+		return jdbc.queryForList(pageQueryDomainInfo_SQL);
+//		}else{
+//			return null;
+//		}
+	}
 }
 
 class DomainResultSetExtractor implements ResultSetExtractor<PreDomainInfo> {
