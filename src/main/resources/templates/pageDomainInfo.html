@@ -7,14 +7,33 @@
 	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var pager = $('#dg').datagrid('getPager');    // get the pager of datagrid
+		pager.pagination({
+			showPageList:false,
+			buttons:[{
+				iconCls:'icon-edit',
+				handler:function(){
+					alert('edit');
+				}
+			}],
+			onBeforeRefresh:function(){
+				alert('before refresh');
+				return true;
+			}
+		});
+	});	
+	</script>
 </head>
 <body>
 	<h2>域名综合信息列表</h2>
 	<p>该列表包含WHOIS，IP，网站相关信息</p>
 	<div style="margin:20px 0;"></div>
 	
-	<table class="easyui-datagrid" title="Basic DataGrid" style="width:890px;height:550px"
-			data-options="singleSelect:true,collapsible:true,url:'domainList',method:'post'">
+	<table id="dg" class="easyui-datagrid" title="Basic DataGrid" style="width:890px;height:550px"
+			data-options="singleSelect:true,collapsible:true,url:'domainList',method:'post'" 
+			pagination='true'>
 		<thead>
 			<tr>
 				<th data-options="field:'domainName',width:150">域名</th>
@@ -27,6 +46,5 @@
 			</tr>
 		</thead>
 	</table>
- 
 </body>
 </html>

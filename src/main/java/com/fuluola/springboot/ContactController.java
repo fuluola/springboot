@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fuluola.domain.DomainInfoService;
+import com.fuluola.utils.ObjectMapperFactory;
 import com.fuluola.utils.ParseResultDomainInfo;
 
 /**
@@ -87,9 +91,15 @@ public class ContactController {
 	
 	@ResponseBody
 	@RequestMapping(value="domainList",method=RequestMethod.POST)
-	public Object domainList(Map<String,Object> model){
-		List<Map<String,Object>> resultMap = domainRepo.pageQueryDomainInfo(null);
-	//	model.put("model", resultMap);
-		return resultMap;
+	public Object domainList(Map<String,Object> model,String paramStr,HttpServletRequest request) throws JsonProcessingException{
+		model.put("start",0);
+		model.put("rows",20);
+		List<Map<String,Object>> resultMap = domainRepo.pageQueryDomainInfo(model);
+		Integer total = domainRepo.pageQueryDomainTotal();
+		model.clear();
+		model.put("total",total);
+		model.put("rows", resultMap);
+		String json = ObjectMapperFactory.JSON.writeValueAsString(model);
+		return json;
 	}
 }

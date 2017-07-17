@@ -36,8 +36,10 @@ public class DomainRepository {
 	private static String updateSUCCESS_SQL = "update domain set status=1,errorMsg=null,updateTime=now() where domain=?";
 	private static String updateERROR_SQL = "update domain set errorMsg=?,errorCount=errorCount+1,updateTime=now() where domain=?";
 	
-	private static String pageQueryDomainInfo_SQL = "select * from domaininfo_collect limit 0,50";
+	private static String pageQueryDomainInfo_SQL = "select * from domaininfo_collect limit ?,? ";
+	private static String pageQueryDomainTotal = "select count(1) from domaininfo_collect";
 	
+	private static String pageQueryCondition_SQL = "where domainName=? or ";
 	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrantName,"
 			+ "registrantPhone,registrantEmail,nsServer,dnsServer,creationDate,expirationDate,ip,ipAddress,"
 			+ "title,keywords,discription,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
@@ -104,12 +106,24 @@ public class DomainRepository {
 	public List<Map<String,Object>> pageQueryDomainInfo(Map<String,Object> params){
 //		if(params!=null&&params.size()>0){
 //			for(String key:params.keySet()){
-//				
+		int start=(Integer) params.get("start");
+		int rows = (Integer) params.get("rows");		
 //			}
-		return jdbc.queryForList(pageQueryDomainInfo_SQL);
+		return jdbc.queryForList(pageQueryDomainInfo_SQL,start,rows);
 //		}else{
 //			return null;
 //		}
+	}
+
+	/**
+	 * @date 2017年7月17日下午11:02:42
+	 * @author fuzhuan
+	 * @return
+	 * 
+	 */
+	public Integer pageQueryDomainTotal() {
+		
+		return jdbc.queryForObject(pageQueryDomainTotal, Integer.class);
 	}
 }
 
