@@ -1,4 +1,4 @@
-package com.fuluola.model;
+package com.lifu.model;
 /** 
  * @description 
  * @author  fuzhuan fu.luola@qq.com

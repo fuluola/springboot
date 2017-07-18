@@ -2,9 +2,9 @@
  * <p>Copyright: Copyright (c) 2017</p>
  * <p>Company: bubugao yunhou</p>
  */
-package com.fuluola.utils;
+package com.lifu.utils;
 
-import com.fuluola.model.DomainObject;
+import com.lifu.model.DomainObject;
 import com.mysql.jdbc.StringUtils;
 
 /**

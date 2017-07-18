@@ -1,10 +1,8 @@
-package com.fuluola.domain;
+package com.lifu.domain;
 
 import java.io.IOException;
 
-import com.fuluola.model.AddressMessage;
-import com.fuluola.utils.ObjectMapperFactory;
-import com.fuluola.utils.WebUtil;
+import com.lifu.utils.WebUtil;
 
 /** 
  * @description 

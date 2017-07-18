@@ -6,8 +6,8 @@ package com.fuluola.springboot;
 
 import java.io.IOException;
 
-import com.fuluola.model.HtmlHead;
-import com.fuluola.utils.WebUtil;
+import com.lifu.model.HtmlHead;
+import com.lifu.utils.WebUtil;
 
 /**
  * @author fuluola

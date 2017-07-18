@@ -1,4 +1,4 @@
-package com.fuluola.springboot;
+package com.lifu.springboot;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,11 +15,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fuluola.domain.DomainInfoService;
-import com.fuluola.model.Constants;
-import com.fuluola.model.DomainObject;
-import com.fuluola.model.PreDomainInfo;
-import com.fuluola.model.QueryDomainRespMessage;
+import com.lifu.domain.DomainInfoService;
+import com.lifu.model.Constants;
+import com.lifu.model.DomainObject;
+import com.lifu.model.PreDomainInfo;
+import com.lifu.model.QueryDomainRespMessage;
 
 /** 
  * @description 

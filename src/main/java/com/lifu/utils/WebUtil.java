@@ -1,4 +1,4 @@
-package com.fuluola.utils;
+package com.lifu.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.util.StringUtils;
 
-import com.fuluola.model.HtmlHead;
+import com.lifu.model.HtmlHead;
 
 /** 
  * @description 

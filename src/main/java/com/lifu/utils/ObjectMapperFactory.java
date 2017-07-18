@@ -1,4 +1,4 @@
-package com.fuluola.utils;
+package com.lifu.utils;
 
 import java.text.SimpleDateFormat;
 

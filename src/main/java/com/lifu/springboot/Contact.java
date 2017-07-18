@@ -2,7 +2,7 @@
  * <p>Copyright: Copyright (c) 2017</p>
  * <p>Company: bubugao yunhou</p>
  */
-package com.fuluola.springboot;
+package com.lifu.springboot;
 
 /**
  * @author fuluola

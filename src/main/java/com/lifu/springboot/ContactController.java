@@ -2,7 +2,7 @@
  * <p>Copyright: Copyright (c) 2017</p>
  * <p>Company: bubugao yunhou</p>
  */
-package com.fuluola.springboot;
+package com.lifu.springboot;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fuluola.domain.DomainInfoService;
-import com.fuluola.utils.ParseResultDomainInfo;
+import com.lifu.domain.DomainInfoService;
+import com.lifu.utils.ParseResultDomainInfo;
 
 /**
  * @author fuluola

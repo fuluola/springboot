@@ -2,7 +2,7 @@
  * <p>Copyright: Copyright (c) 2017</p>
  * <p>Company: bubugao yunhou</p>
  */
-package com.fuluola.domain;
+package com.lifu.domain;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,8 +11,8 @@ import java.io.PrintStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fuluola.model.Constants;
-import com.fuluola.model.QueryDomainRespMessage;
+import com.lifu.model.Constants;
+import com.lifu.model.QueryDomainRespMessage;
 
 /**
  * @author fuluola

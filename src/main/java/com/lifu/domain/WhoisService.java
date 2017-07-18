@@ -2,7 +2,7 @@
  * <p>Copyright: Copyright (c) 2017</p>
  * <p>Company: bubugao yunhou</p>
  */
-package com.fuluola.domain;
+package com.lifu.domain;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,10 +15,10 @@ import java.net.UnknownHostException;
 
 import org.springframework.stereotype.Service;
 
-import com.fuluola.model.Constants;
-import com.fuluola.model.DomainObject;
-import com.fuluola.model.QueryDomainRespMessage;
-import com.fuluola.utils.ParseResultDomainInfo;
+import com.lifu.model.Constants;
+import com.lifu.model.DomainObject;
+import com.lifu.model.QueryDomainRespMessage;
+import com.lifu.utils.ParseResultDomainInfo;
 
 @Service
 public class WhoisService {  

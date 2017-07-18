@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fuluola.domain.DomainQueryThread;
+import com.lifu.domain.DomainQueryThread;
 
 /**
  * @author fuluola

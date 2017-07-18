@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fuluola.domain.DomainInfoService;
-import com.fuluola.domain.WhoisService;
-import com.fuluola.model.QueryDomainRespMessage;
-import com.fuluola.springboot.DomainRepository;
+import com.lifu.domain.DomainInfoService;
+import com.lifu.domain.WhoisService;
+import com.lifu.model.QueryDomainRespMessage;
+import com.lifu.springboot.DomainRepository;
+import com.lifu.Application;
 
 /** 
  * @description 

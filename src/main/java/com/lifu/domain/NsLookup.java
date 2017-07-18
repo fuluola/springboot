@@ -1,4 +1,4 @@
-package com.fuluola.domain;
+package com.lifu.domain;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -6,9 +6,9 @@ import java.net.UnknownHostException;
 
 import org.springframework.stereotype.Service;
 
-import com.fuluola.model.AddressMessage;
-import com.fuluola.utils.ObjectMapperFactory;
-import com.fuluola.utils.WebUtil;
+import com.lifu.model.AddressMessage;
+import com.lifu.utils.ObjectMapperFactory;
+import com.lifu.utils.WebUtil;
 
 /** 
  * @description 

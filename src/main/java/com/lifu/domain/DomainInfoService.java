@@ -1,15 +1,15 @@
-package com.fuluola.domain;
+package com.lifu.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fuluola.model.DomainObject;
-import com.fuluola.model.HtmlHead;
-import com.fuluola.model.QueryDomainRespMessage;
-import com.fuluola.springboot.DomainRepository;
-import com.fuluola.utils.WebUtil;
+import com.lifu.model.DomainObject;
+import com.lifu.model.HtmlHead;
+import com.lifu.model.QueryDomainRespMessage;
+import com.lifu.springboot.DomainRepository;
+import com.lifu.utils.WebUtil;
 
 /** 
  * @description 
