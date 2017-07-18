@@ -38,9 +38,9 @@ public class DomainRepository {
 	
 	private static String pageQueryDomainInfo_SQL = "select * from domaininfo_collect limit 0,50";
 	
-	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrantName,"
+	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrar,registrantName,"
 			+ "registrantPhone,registrantEmail,nsServer,dnsServer,creationDate,expirationDate,ip,ipAddress,"
-			+ "title,keywords,discription,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
+			+ "title,keywords,discription,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
 	private JdbcTemplate jdbc;
 	
 	public DomainRepository(JdbcTemplate jdbc){
@@ -78,7 +78,8 @@ public class DomainRepository {
 		}else if(Constants.SUCCESS.equals(respMsg.getCode())){
 			DomainObject domainInfo = respMsg.getDomainObject();
 			jdbc.update(updateSUCCESS_SQL, new Object[]{data});
-			jdbc.update(insertDomainInfoSQL, domainInfo.getDomainName(),domainInfo.getRegistrantOrganization(),domainInfo.getRegistrantName(),
+			jdbc.update(insertDomainInfoSQL, domainInfo.getDomainName(),domainInfo.getRegistrantOrganization(),domainInfo.getRegistrar(),
+								domainInfo.getRegistrantName(),
 								domainInfo.getRegistrantPhone(),domainInfo.getRegistrantEmail(),domainInfo.getNsServer(),
 								domainInfo.getDnsServer(),domainInfo.getCreationDate(),domainInfo.getExpirationDate(),
 								domainInfo.getIp(),domainInfo.getIpAddress(),domainInfo.getTitle(),domainInfo.getKeywords(),

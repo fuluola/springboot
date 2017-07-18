@@ -21,6 +21,8 @@ public class ParseResultDomainInfo {
 			obj.setCreationDate(line.split(":")[1].trim());
 		}else if(line.startsWith("Registrar Registration Expiration Date:")){
 			obj.setExpirationDate(line.split(":")[1].trim());
+		}else if(line.startsWith("Registrar:")){
+			obj.setRegistrar(line.split(":")[1].trim());
 		}else if(line.startsWith("Registrant Name:")){
 			obj.setRegistrantName(line.split(":")[1].trim());
 		}else if(line.startsWith("Registrant Organization:")){
@@ -69,6 +71,8 @@ public static DomainObject parseOrgDomainInfo(DomainObject obj,String line){
 			obj.setExpirationDate(line.split(":")[1].trim());
 		}else if(line.startsWith("Registrant:")){
 			obj.setRegistrantName(line.split(":")[1].trim());
+		}else if(line.startsWith("Sponsoring Registrar:")){
+			obj.setRegistrar(line.split(":")[1].trim());
 		}else if(line.startsWith("Registrant:")){
 			String ro = line.split(":")[1];
 			obj.setRegistrantOrganization((StringUtils.isEmptyOrWhitespaceOnly(ro)?"":ro).trim());
