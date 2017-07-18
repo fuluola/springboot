@@ -13,8 +13,7 @@ public class App
 {
 
     @RequestMapping("/")
-    @ResponseBody
     String home() {
-        return "Hello 昭君!";
+        return "redirect:/home/domainResult";
     }
 }
