@@ -23,8 +23,8 @@ public class AddressIp {
 	public static void main(String[] args) throws IOException {
 		//AddressMessage address = ObjectMapperFactory.JSON.readValue(getAddressByIp("ip=113.57.228.95"), AddressMessage.class);
 	//	System.out.println(address.getData().getCity()); 
-		//System.out.println(getAddressByIp("ip=113.57.228.95"));
-		System.out.println(WebUtil.getHtmlHead("www.mccookhumanesociety.com"));
+		System.out.println(getAddressByIp("ip=74.220.207.144"));
+//		System.out.println(WebUtil.getHtmlHead("www.mccookhumanesociety.com"));
 	}
  
 }

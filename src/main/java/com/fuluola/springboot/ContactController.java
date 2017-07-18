@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fuluola.domain.DomainInfoService;
 import com.fuluola.utils.ObjectMapperFactory;
-import com.fuluola.utils.ParseResultDomainInfo;
 
 /**
  * @author fuluola
@@ -92,8 +90,12 @@ public class ContactController {
 	@ResponseBody
 	@RequestMapping(value="domainList",method=RequestMethod.POST)
 	public Object domainList(Map<String,Object> model,String paramStr,HttpServletRequest request) throws JsonProcessingException{
-		model.put("start",0);
-		model.put("rows",20);
+	
+		String page = request.getParameter("page");
+		String rows = request.getParameter("rows");
+		Integer start = (Integer.parseInt(page)-1)*Integer.parseInt(rows);
+		model.put("start",start);
+		model.put("rows",Integer.parseInt(rows));
 		List<Map<String,Object>> resultMap = domainRepo.pageQueryDomainInfo(model);
 		Integer total = domainRepo.pageQueryDomainTotal();
 		model.clear();

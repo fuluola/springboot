@@ -9,9 +9,9 @@
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
 	$(function(){
-		var pager = $('#dg').datagrid('getPager');    // get the pager of datagrid
+		var pager = $('#dg').datagrid('getPager');    // get the pager of datagrid 
 		pager.pagination({
-			showPageList:false,
+			showPageList:true,
 			buttons:[{
 				iconCls:'icon-edit',
 				handler:function(){
@@ -31,18 +31,26 @@
 	<p>该列表包含WHOIS，IP，网站相关信息</p>
 	<div style="margin:20px 0;"></div>
 	
-	<table id="dg" class="easyui-datagrid" title="Basic DataGrid" style="width:890px;height:550px"
+	<table id="dg" class="easyui-datagrid" title="Basic DataGrid" style="width:1950px;height:650px"
 			data-options="singleSelect:true,collapsible:true,url:'domainList',method:'post'" 
-			pagination='true'>
+			iconCls="icon-save"  pagination='true'>
 		<thead>
 			<tr>
 				<th data-options="field:'domainName',width:150">域名</th>
+				<th data-options="field:'registrar',width:100">注册商</th>
 				<th data-options="field:'registrantOrganization',width:200">注册机构</th>
 				<th data-options="field:'registrantName',width:80,align:'right'">注册人</th>
 				<th data-options="field:'registrantPhone',width:80,align:'right'">注册人电话</th>
-				<th data-options="field:'creationDate',width:80">创建时间</th>
+				<th data-options="field:'registrantEmail',width:100,align:'right'">注册人邮箱</th>
+				<th data-options="field:'creationDate',width:80">域名创建时间</th>
+				<th data-options="field:'expirationDate',width:80">域名到期时间</th>
+				<th data-options="field:'nsServer',width:100,align:'right'">nsServer</th>
+				<th data-options="field:'dnsServer',width:100,align:'right'">dnsServer</th>
 				<th data-options="field:'ip',width:100,align:'center'">IP</th>
+				<th data-options="field:'ipAddress',width:60,align:'center'">IP归属地</th>
 				<th data-options="field:'title',width:200,align:'center'">网站title</th>
+				<th data-options="field:'keywords',width:200,align:'center'">网站keywords</th>
+				<th data-options="field:'description',width:200,align:'center'">网站描述</th>
 			</tr>
 		</thead>
 	</table>
