@@ -43,6 +43,9 @@ public class DomainRepository {
 	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrantName,"
 			+ "registrantPhone,registrantEmail,nsServer,dnsServer,creationDate,expirationDate,ip,ipAddress,"
 			+ "title,keywords,discription,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
+	
+	private static String updateRemarkSQL = "update domaininfo_collect set remark=? where domain=?";
+	
 	private JdbcTemplate jdbc;
 	
 	public DomainRepository(JdbcTemplate jdbc){
@@ -124,6 +127,10 @@ public class DomainRepository {
 	public Integer pageQueryDomainTotal() {
 		
 		return jdbc.queryForObject(pageQueryDomainTotal, Integer.class);
+	}
+	
+	public int updateRemark(String remark,String domain) {
+		return jdbc.update(updateRemarkSQL, new Object[]{remark,domain});
 	}
 }
 

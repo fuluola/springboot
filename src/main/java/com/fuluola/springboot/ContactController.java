@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fuluola.utils.ObjectMapperFactory;
@@ -103,5 +104,15 @@ public class ContactController {
 		model.put("rows", resultMap);
 		String json = ObjectMapperFactory.JSON.writeValueAsString(model);
 		return json;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="updateRemark",method=RequestMethod.POST)
+	public Object updateRemark(String domain,String remark){
+		if(StringUtils.isEmptyOrWhitespace(remark)){
+			return "备注为空";
+		}
+		domainRepo.updateRemark(remark, domain);
+		return "SUCCESS";
 	}
 }

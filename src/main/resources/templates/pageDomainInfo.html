@@ -2,28 +2,61 @@
 <html>
 <head>
 	<meta charset="UTF-8"></meta>
-	<title>Basic DataGrid</title>
+	<title>域名采集管理页面</title>
 	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
-	$(function(){
-		var pager = $('#dg').datagrid('getPager');    // get the pager of datagrid 
-		pager.pagination({
-			showPageList:true,
-			buttons:[{
-				iconCls:'icon-edit',
-				handler:function(){
-					alert('edit');
-				}
-			}],
-			onBeforeRefresh:function(){
-				alert('before refresh');
+		$(function(){
+			var pager = $('#dg').datagrid('getPager');    // get the pager of datagrid 
+			pager.pagination({
+				showPageList:true,
+				buttons:[{
+					iconCls:'icon-edit',
+					handler:function(){
+						var selectedRow = $("#dg").datagrid('getSelected'); 
+						alert(selectedRow.title);
+					}
+				}]
+			});
+		});	
+		
+		var editIndex = undefined;
+		function endEditing(){
+			if (editIndex == undefined){return true}
+			if ($('#dg').datagrid('validateRow', editIndex)){
+				var ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'domainName'});
+				$('#dg').datagrid('endEdit', editIndex);
+				editIndex = undefined;
 				return true;
+			} else {
+				return false;
 			}
-		});
-	});	
+		}
+		function onClickRow(index){
+			if (editIndex != index){
+				if (endEditing()){
+					$('#dg').datagrid('selectRow', index)
+							.datagrid('beginEdit', index);
+					editIndex = index;
+				} else {
+					$('#dg').datagrid('selectRow', editIndex);
+				}
+			}
+		}
+
+		function accept(){
+			if (endEditing()){
+				$('#dg').datagrid('acceptChanges');
+			}
+		}
+
+		function getChanges(){
+			var rows = $('#dg').datagrid('getChanges');
+			alert(rows.length+' rows are changed!');
+		}
+		
 	</script>
 </head>
 <body>
@@ -31,9 +64,9 @@
 	<p>该列表包含WHOIS，IP，网站相关信息</p>
 	<div style="margin:20px 0;"></div>
 	
-	<table id="dg" class="easyui-datagrid" title="Basic DataGrid" style="width:1950px;height:650px"
-			data-options="singleSelect:true,collapsible:true,url:'domainList',method:'post'" 
-			iconCls="icon-save"  pagination='true'>
+	<table id="dg" class="easyui-datagrid" title="域名综合信息列表" style="width:1950px;height:auto"
+			data-options="singleSelect:true,toolbar: '#tb',url:'domainList',method:'post',onClickRow: onClickRow" 
+			iconCls="icon-edit"  pagination='true'>
 		<thead>
 			<tr>
 				<th data-options="field:'domainName',width:150">域名</th>
@@ -51,8 +84,13 @@
 				<th data-options="field:'title',width:200,align:'center'">网站title</th>
 				<th data-options="field:'keywords',width:200,align:'center'">网站keywords</th>
 				<th data-options="field:'description',width:200,align:'center'">网站描述</th>
+				<th data-options="field:'remark',width:100,align:'center',editor:'textbox'">备注</th>
 			</tr>
 		</thead>
 	</table>
+	
+	<div id="tb" style="height:auto">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">添加备注</a>
+	</div>
 </body>
 </html>
