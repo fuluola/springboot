@@ -94,11 +94,15 @@ public class ContactController {
 	
 		String page = request.getParameter("page");
 		String rows = request.getParameter("rows");
+		String param = request.getParameter("param");
+		if(!StringUtils.isEmptyOrWhitespace(param)){
+			model.put("param", param);
+		}
 		Integer start = (Integer.parseInt(page)-1)*Integer.parseInt(rows);
 		model.put("start",start);
 		model.put("rows",Integer.parseInt(rows));
 		List<Map<String,Object>> resultMap = domainRepo.pageQueryDomainInfo(model);
-		Integer total = domainRepo.pageQueryDomainTotal();
+		Integer total = domainRepo.pageQueryDomainTotal(param);
 		model.clear();
 		model.put("total",total);
 		model.put("rows", resultMap);

@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import com.fuluola.domain.DomainInfoService;
 import com.fuluola.model.Constants;
@@ -39,12 +40,16 @@ public class DomainRepository {
 	private static String pageQueryDomainInfo_SQL = "select * from domaininfo_collect limit ?,? ";
 	private static String pageQueryDomainTotal = "select count(1) from domaininfo_collect";
 	
-	private static String pageQueryCondition_SQL = "where domainName=? or ";
+	private static String pageQueryCondition_SQL = 
+			"where domainName like '%?%' or registrar like '%?%' or registrantName like '%?%' or registrantPhone like '%?%' or "
+			+ "registrantEmail like '%?%' or nsServer like '%?%' or dnsServer like '%?%' or ip like '%?%' or ipAddress like '%?%' "
+			+ "or title like '%?%' or keywords like '%?%' or description like '%?%' ";
+	
 	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrantName,"
 			+ "registrantPhone,registrantEmail,nsServer,dnsServer,creationDate,expirationDate,ip,ipAddress,"
-			+ "title,keywords,discription,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
+			+ "title,keywords,description,googlePR,createTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
 	
-	private static String updateRemarkSQL = "update domaininfo_collect set remark=? where domain=?";
+	private static String updateRemarkSQL = "update domaininfo_collect set remark=? where domainName=?";
 	
 	private JdbcTemplate jdbc;
 	
@@ -107,15 +112,17 @@ public class DomainRepository {
 	}
 	
 	public List<Map<String,Object>> pageQueryDomainInfo(Map<String,Object> params){
-//		if(params!=null&&params.size()>0){
-//			for(String key:params.keySet()){
+
 		int start=(Integer) params.get("start");
 		int rows = (Integer) params.get("rows");		
-//			}
-		return jdbc.queryForList(pageQueryDomainInfo_SQL,start,rows);
-//		}else{
-//			return null;
-//		}
+		String param = (String) params.get("param");
+		if(!StringUtils.isEmptyOrWhitespace(param)){
+			String conditionSQL = pageQueryCondition_SQL.replaceAll("\\?", param);
+			return jdbc.queryForList("select * from domaininfo_collect "+conditionSQL+"limit ?,?",start,rows);
+		}else{
+			return jdbc.queryForList(pageQueryDomainInfo_SQL,start,rows);
+		}
+
 	}
 
 	/**
@@ -124,13 +131,22 @@ public class DomainRepository {
 	 * @return
 	 * 
 	 */
-	public Integer pageQueryDomainTotal() {
-		
-		return jdbc.queryForObject(pageQueryDomainTotal, Integer.class);
+	public Integer pageQueryDomainTotal(String param) {
+		if(StringUtils.isEmptyOrWhitespace(param)){
+			
+			return jdbc.queryForObject(pageQueryDomainTotal, Integer.class);
+		}else{
+			String conditionSQL = pageQueryCondition_SQL.replaceAll("\\?", param);
+			return jdbc.queryForObject("select count(1) from domaininfo_collect "+conditionSQL,Integer.class);
+		}
 	}
 	
 	public int updateRemark(String remark,String domain) {
 		return jdbc.update(updateRemarkSQL, new Object[]{remark,domain});
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(pageQueryCondition_SQL.replaceAll("%[\\w]*%", "+"));
 	}
 }
 
