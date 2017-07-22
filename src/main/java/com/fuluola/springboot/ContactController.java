@@ -1,7 +1,4 @@
-/**
- * <p>Copyright: Copyright (c) 2017</p>
- * <p>Company: bubugao yunhou</p>
- */
+
 package com.fuluola.springboot;
 
 import java.io.BufferedReader;
@@ -118,5 +115,37 @@ public class ContactController {
 		}
 		domainRepo.updateRemark(remark, domain);
 		return "SUCCESS";
+	}
+	/**
+	 * 没有获得信息的域名
+	 * @date 2017年7月22日上午11:18:12
+	 * @author fuzhuan
+	 * @param model
+	 * @return
+	 *
+	 */
+	@RequestMapping(value="errorDomain",method=RequestMethod.GET)
+	public Object errorDomain(Map<String,Object> model){
+
+		return "errorDomainInfo";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="errorDomainList",method=RequestMethod.POST)
+	public Object errorDomainList(Map<String,Object> model,String paramStr,HttpServletRequest request) throws JsonProcessingException{
+	
+		String page = request.getParameter("page");
+		String rows = request.getParameter("rows");
+
+		Integer start = (Integer.parseInt(page)-1)*Integer.parseInt(rows);
+		model.put("start",start);
+		model.put("rows",Integer.parseInt(rows));
+		List<Map<String,Object>> resultMap = domainRepo.findUngetInfoDomains(model);
+		Integer total = domainRepo.findUngetInfoCount();
+		model.clear();
+		model.put("total",total);
+		model.put("rows", resultMap);
+		String json = ObjectMapperFactory.JSON.writeValueAsString(model);
+		return json;
 	}
 }

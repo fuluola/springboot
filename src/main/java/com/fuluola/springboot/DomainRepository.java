@@ -43,7 +43,7 @@ public class DomainRepository {
 	private static String pageQueryCondition_SQL = 
 			"where domainName like '%?%' or registrar like '%?%' or registrantName like '%?%' or registrantPhone like '%?%' or "
 			+ "registrantEmail like '%?%' or nsServer like '%?%' or dnsServer like '%?%' or ip like '%?%' or ipAddress like '%?%' "
-			+ "or title like '%?%' or keywords like '%?%' or description like '%?%' ";
+			+ "or title like '%?%' or keywords like '%?%' or description like '%?%' or remark like '%?%' ";
 	
 	private static String insertDomainInfoSQL= "INSERT INTO domaininfo_collect (domainName,registrantOrganization,registrantName,"
 			+ "registrantPhone,registrantEmail,nsServer,dnsServer,creationDate,expirationDate,ip,ipAddress,"
@@ -51,6 +51,9 @@ public class DomainRepository {
 	
 	private static String updateRemarkSQL = "update domaininfo_collect set remark=? where domainName=?";
 	
+	private static String queryUngetedDomainSQL = "SELECT domain,errorMsg FROM domain WHERE status=0 limit ?,?";
+	
+	private static String queryUngetedDomainCountSQL = "SELECT count(1) FROM domain WHERE status=0";
 	private JdbcTemplate jdbc;
 	
 	public DomainRepository(JdbcTemplate jdbc){
@@ -145,9 +148,16 @@ public class DomainRepository {
 		return jdbc.update(updateRemarkSQL, new Object[]{remark,domain});
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(pageQueryCondition_SQL.replaceAll("%[\\w]*%", "+"));
+	public List<Map<String,Object>> findUngetInfoDomains (Map<String,Object> params){
+		int start=(Integer) params.get("start");
+		int rows = (Integer) params.get("rows");	
+		return jdbc.queryForList(queryUngetedDomainSQL,start,rows);
 	}
+	
+	public int findUngetInfoCount() {
+		return jdbc.queryForObject(queryUngetedDomainCountSQL, Integer.class);
+	}
+
 }
 
 class DomainResultSetExtractor implements ResultSetExtractor<PreDomainInfo> {
