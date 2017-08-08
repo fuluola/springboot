@@ -1,7 +1,3 @@
-/**
- * <p>Copyright: Copyright (c) 2017</p>
- * <p>Company: bubugao yunhou</p>
- */
 package com.fuluola.model;
 
 import java.util.Date;
@@ -14,6 +10,7 @@ public class DomainObject {
 
 	private String domainName;
 	private String registrantOrganization;
+	private String registrar; //注册商
 	private String registrantName;
 	private String registrantPhone;
 	private String registrantEmail;
@@ -42,6 +39,15 @@ public class DomainObject {
 	public void setDomainName(String domainName) {
 		this.domainName = domainName;
 	}
+	
+	
+	public String getRegistrar() {
+		return registrar;
+	}
+	public void setRegistrar(String registrar) {
+		this.registrar = registrar;
+	}
+	
 	/**
 	 * @return the registrantOrganization
 	 */

@@ -1,7 +1,4 @@
-/**
- * <p>Copyright: Copyright (c) 2017</p>
- * <p>Company: bubugao yunhou</p>
- */
+
 package com.fuluola.domain;
 
 import java.io.BufferedReader;
@@ -23,6 +20,7 @@ import com.fuluola.utils.ParseResultDomainInfo;
 @Service
 public class WhoisService {  
 
+
     private static final int DEFAULT_PORT = 43;  
     static String[] urls = new String[]{"=baidu.com","ele.me","csdn.net"};
       //grs-whois.hichina.com whois.paycenter.com.cn whois.markmonitor.com whois.verisign-grs.com
@@ -30,6 +28,8 @@ public class WhoisService {
     	
     	if(domain.contains("www.")){
     		domain = domain.replace("www.", "").trim();
+    	}else if(domain.contains("http://www.")){
+    		domain = domain.replace("http://www.", "").trim();
     	}
         String server = "";  
         String tld = getTLD(domain);  
@@ -122,7 +122,7 @@ public class WhoisService {
 		    out.flush();  
 		    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
 	        while ((line = in.readLine()) != null) {
-	        	if(line.contains("Whois Server:")){
+	        	if(line.toLowerCase().contains("Whois Server:".toLowerCase())){
 	        		whoisServer=line.substring(line.indexOf(":")+1).trim();
 	        		break;
 	        	}
@@ -272,8 +272,8 @@ public class WhoisService {
       //  System.out.println(w.query("spring.io")); 
         long start=System.currentTimeMillis();
         //QueryDomainRespMessage
-        String msg = w.queryWhoisServer("geescomelec.com", "whois.verisign-grs.com");
-
+        String msg = w.queryWhoisServer("163.com", "whois.verisign-grs.com");
+     //   QueryDomainRespMessage msg = w.query("taobao.com");
         System.out.println("用时: "+(System.currentTimeMillis()-start));
         System.out.println(msg);
     }  

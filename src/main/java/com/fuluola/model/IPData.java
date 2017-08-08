@@ -4,7 +4,7 @@ package com.fuluola.model;
  * @author  fuzhuan fu.luola@qq.com
  * @date 2017年6月26日 
  */
-public class Data {
+public class IPData {
 
 	private String country;
 	private String region;//省份

@@ -27,7 +27,7 @@ public class ScheduledTasks{
 	private static Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
 	@Autowired
 	private DomainRepository domainRepo;
-	//30秒执行一次
+	//10秒执行一次
     @Scheduled(fixedRate = 1000 * 600)
     public void reportCurrentTime(){
     	logger.info("开始批量域名信息采集");

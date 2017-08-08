@@ -7,7 +7,7 @@ package com.fuluola.model;
 public class AddressMessage {
 
 	private int code;
-	private Data data;
+	private IPData data;
 	
 	public int getCode() {
 		return code;
@@ -15,10 +15,10 @@ public class AddressMessage {
 	public void setCode(int code) {
 		this.code = code;
 	}
-	public Data getData() {
+	public IPData getData() {
 		return data;
 	}
-	public void setData(Data data) {
+	public void setData(IPData data) {
 		this.data = data;
 	}
 	

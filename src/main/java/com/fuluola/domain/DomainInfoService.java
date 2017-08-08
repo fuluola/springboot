@@ -1,5 +1,10 @@
 package com.fuluola.domain;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.fuluola.model.DomainObject;
 import com.fuluola.model.HtmlHead;
 import com.fuluola.model.QueryDomainRespMessage;
-import com.fuluola.springboot.DomainRepository;
 import com.fuluola.utils.WebUtil;
+import com.mysql.jdbc.StringUtils;
 
 /** 
  * @description 
@@ -19,7 +24,10 @@ import com.fuluola.utils.WebUtil;
 @Service
 public class DomainInfoService {
 
+
 	private static Logger logger = LoggerFactory.getLogger(DomainInfoService.class);
+	
+	private String PR_URL = "http://pr.chinaz.com/";
 	
 	@Autowired
 	private NsLookup nslookUp;
@@ -40,8 +48,8 @@ public class DomainInfoService {
 		logger.info("开始采集ip地址信息,域名："+domain);
 		String ip = nslookUp.lookUpIP(domain);
 		if(ip!=null){
-			String city = nslookUp.getAddressCityByIp("ip="+ip);
-			domainInfo.setIpAddress(city);
+			String address = nslookUp.getAddressCityByIp("ip="+ip);
+			domainInfo.setIpAddress(address);
 		}
 		logger.info("开始采集网页信息,域名："+domain);
 		HtmlHead hh = WebUtil.getHtmlHead(domain);
@@ -51,8 +59,32 @@ public class DomainInfoService {
 			domainInfo.setDescription(hh.getDescription());
 		}
 		domainInfo.setIp(ip);
+		domainInfo.setGooglePR(getGooglePR(domain));
 		return respMessage;
 		
 	}
 	
+	public String getGooglePR(String domain)  {
+		Runtime rt = Runtime.getRuntime();
+		Process p;
+		try {
+			p = rt.exec("phantomjs.exe D:\\dev_soft\\phantomjs-2.1.1-windows\\netsniff2.js "+PR_URL+domain);
+			InputStream is = p.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String line=null;
+			String result = "";
+			while((line=br.readLine())!=null){
+				result += line;
+			}
+			if(!StringUtils.isNullOrEmpty(result)){
+				
+				String pr=result.substring(result.lastIndexOf(".")-1, result.lastIndexOf("."));
+				return pr;
+			}
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 }
